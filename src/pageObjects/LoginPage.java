@@ -2,10 +2,14 @@ package pageObjects;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.security.UserAndPassword;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import junit.framework.Assert;
 import utility.BasePage;
@@ -23,6 +27,7 @@ public class LoginPage extends BasePage {
 	public static final String ID_Username ="username";
 	public static final String ID_Password ="password";
 	public static final String submit_Button = "submit";
+	public static final String ID_DonateNow = "cmp-nfr-top-side-donate";
 	public LoginPage (WebDriver driver) {
 		super(driver);
 	}
@@ -32,7 +37,8 @@ public class LoginPage extends BasePage {
 		driver.get(config.getUrl());			
 	}
 	public void clickUsernamePassbtn() throws InterruptedException {
-		Thread.sleep(1000);
+		WebDriverWait wait = new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id(ID_UsernamePassword)));
 		driver.findElement(By.id(ID_UsernamePassword)).click();
 	}
 	public void enterCredentials() throws InterruptedException {

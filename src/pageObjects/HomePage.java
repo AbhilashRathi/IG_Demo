@@ -14,7 +14,7 @@ import utility.ConfigFileReader;
 
 public class HomePage extends BasePage{
 
-	public static final String actualMessage = "test, pat your back!";
+	public static final String actualMessage = "pat your back!";
 	public static final String ID_DonateNow = "cmp-nfr-top-side-donate";
 	public static final String ID_DonationAmount = "story_popup_donation_amount";
 	public static final String ID_FullName = "full_name";
@@ -27,13 +27,17 @@ public class HomePage extends BasePage{
 	public static final String ID_CvvNumber = "cvvNumber";
 	public static final String ID_ContributeBtn = "donate-card-contribute";
 	public static final String Class_ThankYouText = "thankyou-banner__content-main";
+	public static final String Xpath_AmountErrorMessage = "//small[@data-bv-result=\"INVALID\"]";
+	public static final String actualAmountErrorMsg = "Minimum donation amount is";
 
 	public HomePage (WebDriver driver) {
 		super(driver);
 	}
 	
 	public void clickDonateNow() throws InterruptedException {
-		Thread.sleep(1500);
+		//Thread.sleep(1500);
+		WebDriverWait wait = new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id(ID_DonateNow)));
 		WebElement element = driver.findElement(By.id(ID_DonateNow));
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();",element);
@@ -73,6 +77,11 @@ public class HomePage extends BasePage{
    }
    public void verifyConfirmMessage() {
 	   String expectedMsg = driver.findElement(By.className(Class_ThankYouText)).getText();
-	   Assert.assertEquals("Validation failed",expectedMsg, actualMessage);
+	   System.out.println(expectedMsg);
+	   Assert.assertTrue("validation failed", expectedMsg.contains(actualMessage));
+   }
+   public void validateMinAmountErrormsg() {
+	   String expectedErrorMsg = driver.findElement(By.xpath(Xpath_AmountErrorMessage)).getText();
+	   Assert.assertTrue("Minimum amount less than 50 allowed", expectedErrorMsg.contains(actualAmountErrorMsg));
    }
     }
